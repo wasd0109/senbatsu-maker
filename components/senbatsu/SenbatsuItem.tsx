@@ -1,11 +1,11 @@
 import { draggable, dropTargetForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react'
 
 interface SenbatsuItemProps {
     rowIndex: number;
     colIndex: number;
-    member: Member
+    member: SenbatsuGridItem;
 }
 
 function SenbatsuItem({ rowIndex, colIndex, member }: SenbatsuItemProps) {
@@ -55,7 +55,6 @@ function SenbatsuItem({ rowIndex, colIndex, member }: SenbatsuItemProps) {
             });
         }
     }, [member])
-
     if (member) {
         return (
             <div className="relative m-0.5 sm:m-1" key={`${rowIndex}-${colIndex}`}>

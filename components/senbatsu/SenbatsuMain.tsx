@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import SenbatsuField from './SenbatsuField';
 import { monitorForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 
-type SenbatsuGrid = { [rowIndex: number]: { [colIndex: number]: Member } };
 
 const isLocation = (obj: unknown): obj is { rowIndex: number; colIndex: number } => {
   return typeof obj === 'object' && obj !== null && 'rowIndex' in obj && 'colIndex' in obj && typeof obj.rowIndex === 'number' && typeof obj.colIndex === 'number';
@@ -50,14 +49,15 @@ function SenbatsuMain() {
 
         setSenbatsuMembers(prevState => {
           const newState = { ...prevState };
-          if (!newState[destinationLocation.rowIndex]) {
-            newState[destinationLocation.rowIndex] = {};
-          }
           newState[destinationLocation.rowIndex][destinationLocation.colIndex] = sourceMember;
-          if (destinationMember && isMember(destinationMember)) {
-            const sourceLocation = sourceTarget?.data.location;
-            if (isLocation(sourceLocation)) {
+
+          const sourceLocation = sourceTarget?.data.location;
+
+          if (isLocation(sourceLocation)) {
+            if (destinationMember && isMember(destinationMember)) {
               newState[sourceLocation.rowIndex][sourceLocation.colIndex] = destinationMember;
+            } else {
+              newState[sourceLocation.rowIndex][sourceLocation.colIndex] = undefined;
             }
           }
           return newState;
