@@ -3,11 +3,13 @@ import SenbatsuItem from './SenbatsuItem';
 
 interface SenbatsuFieldProps {
     senbatsuMembers: { [rowIndex: number]: { [colIndex: number]: SenbatsuGridItem } }
+    numRows: number
+    columnsPerRow: { [key: number]: number }
 }
 
-function SenbatsuField({ senbatsuMembers }: SenbatsuFieldProps) {
-    const row = 3;
-    const column: { [key: number]: number } = { 1: 3, 2: 7, 3: 7 }
+function SenbatsuField({ senbatsuMembers, numRows, columnsPerRow }: SenbatsuFieldProps) {
+    const row = numRows;
+    const column = columnsPerRow;
     return (
         <div className="space-y-1 sm:space-y-2">
             {Array.from(Array(row)).map((_, rowIndex) => (

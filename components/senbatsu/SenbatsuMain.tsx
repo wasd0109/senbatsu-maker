@@ -25,10 +25,43 @@ const initializeSenbatsuGrid = (rows: number, columnsPerRow: { [key: number]: nu
   return grid;
 }
 
-function SenbatsuMain() {
+interface SenbatsuMainProps {
+  numRows: number;
+  columnsPerRow: { [key: number]: number };
+}
+
+function SenbatsuMain({ numRows, columnsPerRow }: SenbatsuMainProps) {
   const [senbatsuMembers, setSenbatsuMembers] = useState<SenbatsuGrid>(() =>
     initializeSenbatsuGrid(3, { 1: 3, 2: 7, 3: 7 })
   );
+  const [prevConfig, setPrevConfig] = useState<{ numRows: number; columnsPerRow: { [key: number]: number } }>({
+    numRows: 3,
+    columnsPerRow: { 1: 3, 2: 7, 3: 7 }
+  });
+
+  // Adjust grid when configuration changes, preserving existing members
+  if (prevConfig.numRows !== numRows || JSON.stringify(prevConfig.columnsPerRow) !== JSON.stringify(columnsPerRow)) {
+    setSenbatsuMembers(prevState => {
+      const newState: SenbatsuGrid = {};
+
+      // Initialize all rows based on new configuration
+      for (let rowIndex = 0; rowIndex < numRows; rowIndex++) {
+        newState[rowIndex] = {};
+        const numColumns = columnsPerRow[numRows - rowIndex] || 0;
+
+        for (let colIndex = 0; colIndex < numColumns; colIndex++) {
+          // Preserve existing member if it exists at this position
+          if (prevState[rowIndex]?.[colIndex]) {
+            newState[rowIndex][colIndex] = prevState[rowIndex][colIndex];
+          }
+        }
+      }
+
+      return newState;
+    });
+
+    setPrevConfig({ numRows, columnsPerRow });
+  }
 
   useEffect(() => {
     return monitorForElements({
@@ -70,7 +103,7 @@ function SenbatsuMain() {
   return (
     <main className="flex-1 flex items-center justify-center p-4 md:p-8 overflow-y-auto">
       <div className="w-full max-w-4xl">
-        <SenbatsuField senbatsuMembers={senbatsuMembers} />
+        <SenbatsuField senbatsuMembers={senbatsuMembers} numRows={numRows} columnsPerRow={columnsPerRow} />
       </div>
     </main>
   );
