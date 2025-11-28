@@ -2,7 +2,7 @@ import React from 'react'
 import MemberItem from './MemberItem'
 
 interface MemberListProps {
-    members: MemberWithGroupName[]
+    members: Member[]
 }
 
 function MemberList({ members }: MemberListProps) {

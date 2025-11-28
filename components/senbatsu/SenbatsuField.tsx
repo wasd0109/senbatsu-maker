@@ -2,7 +2,7 @@ import React from 'react'
 import SenbatsuItem from './SenbatsuItem';
 
 interface SenbatsuFieldProps {
-    senbatsuMembers: { [rowIndex: number]: { [colIndex: number]: MemberWithGroupName } }
+    senbatsuMembers: { [rowIndex: number]: { [colIndex: number]: Member } }
 }
 
 function SenbatsuField({ senbatsuMembers }: SenbatsuFieldProps) {

@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react'
 interface SenbatsuItemProps {
     rowIndex: number;
     colIndex: number;
-    member: MemberWithGroupName
+    member: Member
 }
 
 function SenbatsuItem({ rowIndex, colIndex, member }: SenbatsuItemProps) {

@@ -3,7 +3,7 @@ import { draggable } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import ImageCard from '../ImageCard'
 
 interface MemberItemProps {
-    member: MemberWithGroupName;
+    member: Member;
     onClick?: () => void
 }
 
@@ -32,7 +32,7 @@ function MemberItem({
             ref={ref}
             imageSrc={member.imageSrc || ""}
             title={member.name}
-            subtitle={member.groupName}
+            subtitle={member.group}
             alt={member.name}
             onClick={onClick}
         />
