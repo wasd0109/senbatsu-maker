@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react'
 interface SenbatsuItemProps {
     rowIndex: number;
     colIndex: number;
-    member: { name: string; graduated?: boolean; groupName?: string; imageSrc: string | StaticImageData };
+    member: MemberWithGroupName
 }
 
 function SenbatsuItem({ rowIndex, colIndex, member }: SenbatsuItemProps) {
@@ -50,7 +50,7 @@ function SenbatsuItem({ rowIndex, colIndex, member }: SenbatsuItemProps) {
 
                 {/* Member card */}
                 <div className={`${dragging ? "opacity-50" : ""} border border-gray-300 w-[100px] h-40 relative z-10`} ref={draggableRef}>
-                    <Image draggable="false" ref={imageRef} src={member.imageSrc} alt={member.name} className="w-full h-full object-cover" />
+                    <Image draggable="false" ref={imageRef} src={member.imageSrc} fill alt={member.name} className=" w-[100px] h-40 object-cover" />
                 </div>
             </div>
         )

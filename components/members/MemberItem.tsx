@@ -1,11 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { draggable } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
-import image from "@/assets/members/1000_1000_102400.jpg"
-import { StaticImageData } from 'next/image'
 import ImageCard from '../ImageCard'
 
 interface MemberItemProps {
-    member: { name: string; graduated?: boolean; groupName?: string; imageSrc?: StaticImageData | string };
+    member: MemberWithGroupName;
     onClick?: () => void
 }
 
@@ -27,7 +25,7 @@ function MemberItem({
                 onDrop: () => setDragging(false),
             });
         }
-    }, []);
+    }, [member]);
     return (
         <ImageCard
             className={dragging ? 'opacity-50' : ''}
