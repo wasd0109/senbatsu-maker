@@ -4,12 +4,14 @@ import ImageCard from '../ImageCard'
 
 interface MemberItemProps {
     member: Member;
-    onClick?: () => void
+    onClick?: () => void;
+    setIsSidebarOpen: (isOpen: boolean) => void
 }
 
 function MemberItem({
     member,
-    onClick
+    onClick,
+    setIsSidebarOpen
 }: MemberItemProps) {
     const ref = useRef<HTMLDivElement>(null);
     const [dragging, setDragging] = useState<boolean>(false);
@@ -21,11 +23,14 @@ function MemberItem({
             return draggable({
                 element: el,
                 getInitialData: () => ({ member }),
-                onDragStart: () => setDragging(true),
+                onDragStart: () => {
+                    setDragging(true);
+                    setIsSidebarOpen(false)
+                },
                 onDrop: () => setDragging(false),
             });
         }
-    }, [member]);
+    }, [member, setIsSidebarOpen]);
     return (
         <ImageCard
             className={dragging ? 'opacity-50' : ''}
