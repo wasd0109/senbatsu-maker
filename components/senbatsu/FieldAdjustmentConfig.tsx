@@ -7,6 +7,7 @@ function FieldAdjustmentConfig() {
     const scale = selectedStyle.senbatsuFieldScale || 1;
     const overlapGap = selectedStyle.senbatsuItemOverlapGap || { x: 25, y: 10 };
     const hasOverlap = selectedStyle.senbatsuItemOverlap === true;
+    const staggerEnabled = selectedStyle.senbatsuFieldStaggerEnabled ?? false;
 
     return (
         <div className="p-3 bg-white rounded-lg border border-gray-200">
@@ -67,6 +68,19 @@ function FieldAdjustmentConfig() {
                 />
             </div>
 
+            {/* Stagger Toggle */}
+            <div className="mb-3">
+                <label className="flex items-center gap-2 text-xs text-gray-600">
+                    <input
+                        type="checkbox"
+                        checked={staggerEnabled}
+                        onChange={(e) => updateStyleProperty('senbatsuFieldStaggerEnabled', e.target.checked)}
+                        className="rounded"
+                    />
+                    Enable Row Staggering
+                </label>
+            </div>
+
             {/* Overlap Gap Controls - Only show if overlap is enabled */}
             {hasOverlap && (
                 <>
@@ -111,6 +125,7 @@ function FieldAdjustmentConfig() {
                 onClick={() => {
                     updateStyleProperty('senbatsuFieldOffset', { x: 0, y: 0 });
                     updateStyleProperty('senbatsuFieldScale', 1);
+                    updateStyleProperty('senbatsuFieldStaggerEnabled', true);
                     if (hasOverlap) {
                         updateStyleProperty('senbatsuItemOverlapGap', { x: 25, y: 10 });
                     }

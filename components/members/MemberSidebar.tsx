@@ -4,7 +4,6 @@ import ImageCard from '@/components/ImageCard';
 import MemberList from './MemberList';
 import { calculateColorWithAlpha } from '@/lib/utils/colorUtils';
 import FormationConfig from '@/components/senbatsu/FormationConfig';
-import FieldAdjustmentConfig from '@/components/senbatsu/FieldAdjustmentConfig';
 import { useSenbatsuStyle } from '@/contexts/SenbatsuStyleContext';
 
 interface MemberSidebarProps {
@@ -136,11 +135,6 @@ function MemberSidebar({ memberData, groupMetadata, numRows, setNumRows, columns
                         columnsPerRow={columnsPerRow}
                         setColumnsPerRow={setColumnsPerRow}
                     />
-                </div>
-
-                {/* Field Adjustment Configuration */}
-                <div className="mb-4">
-                    <FieldAdjustmentConfig />
                 </div>
             </aside>
         </>

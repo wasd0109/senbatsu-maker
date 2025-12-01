@@ -11,6 +11,7 @@ type SenbatsuStyle = {
   senbatsuItemOverlapGap?: { x: number; y: number };
   senbatsuFieldOffset?: { x: number; y: number };
   senbatsuFieldScale?: number;
+  senbatsuFieldStaggerEnabled?: boolean;
 };
 type SenbatsuStyleValue = 'none' | 'nogizaka' | 'sakurazaka' | 'hinatazaka';
 
@@ -33,6 +34,7 @@ const senbatsuStyle: { [key: string]: SenbatsuStyle } = {
     senbatsuItemOverlapGap: { x: 25, y: 10 },
     senbatsuFieldOffset: { x: 0, y: 0 },
     senbatsuFieldScale: 1,
+    senbatsuFieldStaggerEnabled: true,
   },
   "sakurazaka": {
     label: '櫻坂46',

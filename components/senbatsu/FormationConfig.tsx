@@ -9,7 +9,7 @@ interface FormationConfigProps {
 
 const generateColumnInputValue = (numRows: number, columnsPerRow: { [key: number]: number }) => {
     return Object.fromEntries(
-        Array.from({ length: numRows }, (_, i) => i + 1).map(rowNum => [
+        Array.from({ length: numRows }, (_, i) => i).map(rowNum => [
             rowNum,
             columnsPerRow[rowNum]?.toString() || '1'
         ])
@@ -42,13 +42,13 @@ function FormationConfig({ numRows, setNumRows, columnsPerRow, setColumnsPerRow 
                         const newNumRows = parseInt(e.target.value);
                         // Add default columns for new rows
                         const newCols = { ...columnsPerRow };
-                        for (let i = 1; i <= newNumRows; i++) {
+                        for (let i = 0; i < newNumRows; i++) {
                             if (!newCols[i]) {
                                 newCols[i] = 1;
                             }
                         }
-                        setColumnsPerRow(newCols);
                         setNumRows(newNumRows);
+                        setColumnsPerRow(newCols);
                     }}
                     className="w-full h-1"
                 />
@@ -58,7 +58,7 @@ function FormationConfig({ numRows, setNumRows, columnsPerRow, setColumnsPerRow 
             <div>
                 <label className="block text-xs font-medium text-gray-600 mb-2">Columns per Row</label>
                 <div className="space-y-1.5">
-                    {Array.from({ length: numRows }, (_, i) => i + 1).map((rowNum) => (
+                    {Array.from({ length: numRows }, (_, i) => i).map((rowNum) => (
                         <div key={rowNum} className="flex flex-col gap-1">
                             <div className="flex items-center gap-2">
                                 <span className="text-xs text-gray-500 w-12">Row {rowNum}:</span>

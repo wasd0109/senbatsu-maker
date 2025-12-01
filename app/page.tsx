@@ -27,14 +27,18 @@ const groupMetadata: { [key: string]: { logo: StaticImageData; color: string } }
 }
 
 // Initialize senbatsu grid with empty slots
-const initializeSenbatsuGrid = (rows: number, columnsPerRow: { [key: number]: number }): SenbatsuGrid => {
+const initializeSenbatsuGrid = (rows: number, columnsPerRow: { [key: number]: number }, existingGrid: SenbatsuGrid): SenbatsuGrid => {
   const grid: SenbatsuGrid = {};
   for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
     grid[rowIndex] = {};
     const numColumns = columnsPerRow[rows - rowIndex] || 0;
     for (let colIndex = 0; colIndex < numColumns; colIndex++) {
       // Initialize with empty object - will be undefined until a member is placed
-      // We don't set anything here, just ensure the row exists
+      if (existingGrid && existingGrid[rowIndex] && existingGrid[rowIndex][colIndex]) {
+        grid[rowIndex][colIndex] = existingGrid[rowIndex][colIndex];
+      } else {
+        grid[rowIndex][colIndex] = undefined;
+      }
     }
   }
   return grid;
@@ -45,7 +49,7 @@ export default function Home() {
   const [numRows, setNumRows] = useState(3);
   const [columnsPerRow, setColumnsPerRow] = useState<{ [key: number]: number }>({ 0: 5, 1: 6, 2: 9 });
   const [memberData, setMemberData] = useState<{ [key: string]: Member[] }>({});
-  const [senbatsuMembers, setSenbatsuMembers] = useState<SenbatsuGrid>(initializeSenbatsuGrid(numRows, columnsPerRow));
+  const [senbatsuMembers, setSenbatsuMembers] = useState<SenbatsuGrid>(initializeSenbatsuGrid(numRows, columnsPerRow, {}));
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -69,6 +73,10 @@ export default function Home() {
       }
     }
   }, [numRows, columnsPerRow, senbatsuMembers]);
+
+  useEffect(() => {
+    setSenbatsuMembers((prevState) => initializeSenbatsuGrid(numRows, columnsPerRow, prevState));
+  }, [numRows, columnsPerRow]);
 
   useEffect(() => {
     async function fetchMembers() {

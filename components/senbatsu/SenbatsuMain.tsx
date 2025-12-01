@@ -3,6 +3,7 @@ import SenbatsuField from './SenbatsuField';
 import { monitorForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import { toJpeg } from 'html-to-image';
 import Image from 'next/image';
+import FieldAdjustmentConfig from './FieldAdjustmentConfig';
 
 
 const isLocation = (obj: unknown): obj is { rowIndex: number; colIndex: number } => {
@@ -144,6 +145,11 @@ function SenbatsuMain({ numRows, columnsPerRow, senbatsuMembers, setSenbatsuMemb
         <div className='h-full flex justify-center items-end'>
           <SenbatsuField senbatsuMembers={senbatsuMembers} numRows={numRows} columnsPerRow={columnsPerRow} />
         </div>
+      </div>
+
+      {/* Field Adjustment Configuration */}
+      <div className="absolute bottom-4 right-4 z-10">
+        <FieldAdjustmentConfig />
       </div>
     </main>
   );
