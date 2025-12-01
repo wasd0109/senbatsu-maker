@@ -18,8 +18,11 @@ function SenbatsuField({ senbatsuMembers, numRows, columnsPerRow }: SenbatsuFiel
     // Get offset from selected style, default to {x: 0, y: 0} if not defined
     const offset = selectedStyle.senbatsuFieldOffset || { x: 0, y: 0 };
 
-    // Apply offset: positive x = right, negative x = left, positive y = up, negative y = down
-    const transformStyle = `translate(${offset.x}px, ${offset.y}px)`;
+    // Get scale from selected style, default to 1 if not defined
+    const scale = selectedStyle.senbatsuFieldScale || 1;
+
+    // Apply offset and scale: positive x = right, negative x = left, positive y = up, negative y = down
+    const transformStyle = `translate(${offset.x}px, ${offset.y}px) scale(${scale})`;
 
     return (
         <div style={{ transform: transformStyle }}>
