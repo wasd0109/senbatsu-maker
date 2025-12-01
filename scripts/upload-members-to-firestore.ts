@@ -7,7 +7,7 @@ type Member = {
     group: string;
     generation?: string;
     graduated?: boolean;
-    imageSrc: string
+    imageSrc?: string
 }
 
 // Member data from page.tsx

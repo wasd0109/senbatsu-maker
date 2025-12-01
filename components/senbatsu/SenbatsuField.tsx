@@ -1,5 +1,7 @@
 import React from 'react'
 import SenbatsuItem from './SenbatsuItem';
+import { useSenbatsuStyle } from '@/contexts/SenbatsuStyleContext';
+import { calculateZIndex } from '@/lib/utils/zIndexUtils';
 
 interface SenbatsuFieldProps {
     senbatsuMembers: { [rowIndex: number]: { [colIndex: number]: SenbatsuGridItem } }
@@ -8,17 +10,41 @@ interface SenbatsuFieldProps {
 }
 
 function SenbatsuField({ senbatsuMembers, numRows, columnsPerRow }: SenbatsuFieldProps) {
+    const { selectedStyle } = useSenbatsuStyle();
     const row = numRows;
     const column = columnsPerRow;
+    const shouldOverlap = selectedStyle.senbatsuItemOverlap === true;
+
+    // Get offset from selected style, default to {x: 0, y: 0} if not defined
+    const offset = selectedStyle.senbatsuFieldOffset || { x: 0, y: 0 };
+
+    // Apply offset: positive x = right, negative x = left, positive y = up, negative y = down
+    const transformStyle = `translate(${offset.x}px, ${offset.y}px)`;
+
     return (
-        <div className="space-y-2">
-            {Array.from(Array(row)).map((_, rowIndex) => (
-                <div key={rowIndex} className='flex justify-center flex-nowrap gap-1'> {
-                    Array.from(Array(column[row - rowIndex])).map((_, colIndex) => (
-                        <SenbatsuItem key={`${rowIndex}-${colIndex}`} member={senbatsuMembers[rowIndex][colIndex]} rowIndex={rowIndex} colIndex={colIndex} />
-                    ))
-                } </div>
-            ))}
+        <div style={{ transform: transformStyle }}>
+            {Array.from(Array(row)).map((_, rowIndex) => {
+                // Calculate stagger offset - alternating rows are shifted by half the item width
+                const itemWidth = selectedStyle.senbatsuItemSize.width;
+                const overlapOffset = shouldOverlap ? 50 : 0; // Account for the overlap margin
+                const staggerOffset = rowIndex % 2 === 1 ? (itemWidth - overlapOffset) / 2 : 0;
+
+                return (
+                    <div
+                        key={rowIndex}
+                        className='flex justify-center flex-nowrap'
+                        style={{
+                            marginBottom: shouldOverlap ? '-50px' : '1px',
+                            marginLeft: `${staggerOffset}px`,
+                            height: "100%",
+                        }}
+                    > {
+                            Array.from(Array(column[row - rowIndex])).map((_, colIndex) =>
+                                <SenbatsuItem key={`${rowIndex}-${colIndex}`} member={senbatsuMembers[rowIndex][colIndex]} rowIndex={rowIndex} colIndex={colIndex} zIndex={calculateZIndex(rowIndex, colIndex, numRows, columnsPerRow[row - rowIndex])} />
+                            )
+                        } </div>
+                );
+            })}
         </div>
     )
 

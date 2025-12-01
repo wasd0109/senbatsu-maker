@@ -8,7 +8,7 @@ interface Member {
   group: string;
   generation?: string;
   graduated?: boolean;
-  imageSrc: string;
+  imageSrc?: string;
 }
 
 export async function GET() {

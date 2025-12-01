@@ -4,6 +4,8 @@ import ImageCard from '@/components/ImageCard';
 import MemberList from './MemberList';
 import { calculateColorWithAlpha } from '@/lib/utils/colorUtils';
 import FormationConfig from '@/components/senbatsu/FormationConfig';
+import FieldAdjustmentConfig from '@/components/senbatsu/FieldAdjustmentConfig';
+import { useSenbatsuStyle } from '@/contexts/SenbatsuStyleContext';
 
 interface MemberSidebarProps {
     memberData: { [key: string]: Member[] };
@@ -15,6 +17,7 @@ interface MemberSidebarProps {
 }
 
 function MemberSidebar({ memberData, groupMetadata, numRows, setNumRows, columnsPerRow, setColumnsPerRow }: MemberSidebarProps) {
+    const { selectedStyle, setSelectedStyle, senbatsuStyle } = useSenbatsuStyle();
     const [showMemberList, setShowMemberList] = useState(Object.fromEntries(Object.keys(memberData).map(group => [group, false])));
     const [groupByGeneration, setGroupByGeneration] = useState(true);
     const [showGraduated, setShowGraduated] = useState(false);
@@ -109,10 +112,16 @@ function MemberSidebar({ memberData, groupMetadata, numRows, setNumRows, columns
                 <div className="mt-auto mb-3">
                     <div className="p-3 bg-white rounded-lg border border-gray-200">
                         <h3 className="text-sm font-semibold mb-2 text-gray-700">Style</h3>
-                        <select className="w-full px-2 py-1 border border-gray-300 rounded text-xs">
-                            <option value="nogizaka">乃木坂46</option>
-                            <option value="sakurazaka">櫻坂46</option>
-                            <option value="hinatazaka">日向坂46</option>
+                        <select
+                            className="w-full px-2 py-1 border border-gray-300 rounded text-xs"
+                            value={selectedStyle.value}
+                            onChange={(e) => setSelectedStyle(senbatsuStyle[e.target.value])}
+                        >
+                            {senbatsuStyle && Object.keys(senbatsuStyle).map((styleKey) => (
+                                <option key={styleKey} value={styleKey}>
+                                    {senbatsuStyle[styleKey].label}
+                                </option>
+                            ))}
                         </select>
                     </div>
                 </div>
@@ -125,6 +134,11 @@ function MemberSidebar({ memberData, groupMetadata, numRows, setNumRows, columns
                         columnsPerRow={columnsPerRow}
                         setColumnsPerRow={setColumnsPerRow}
                     />
+                </div>
+
+                {/* Field Adjustment Configuration */}
+                <div className="mb-4">
+                    <FieldAdjustmentConfig />
                 </div>
             </aside>
         </>

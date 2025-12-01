@@ -7,6 +7,7 @@ import nogiLogo from "@/assets/groups/nogizaka.png"
 import hinataLogo from "@/assets/groups/hinatazaka.svg"
 import { StaticImageData } from 'next/image';
 import { useState, useEffect } from 'react';
+import { SenbatsuStyleProvider } from '@/contexts/SenbatsuStyleContext';
 
 // API response types
 interface ApiResponse {
@@ -25,9 +26,10 @@ const groupMetadata: { [key: string]: { logo: StaticImageData; color: string } }
   "日向坂46": { logo: hinataLogo, color: "#7cc7e8" },
 }
 
+
 export default function Home() {
   const [numRows, setNumRows] = useState(3);
-  const [columnsPerRow, setColumnsPerRow] = useState<{ [key: number]: number }>({ 1: 3, 2: 7, 3: 7 });
+  const [columnsPerRow, setColumnsPerRow] = useState<{ [key: number]: number }>({ 1: 5, 2: 6, 3: 9 });
   const [memberData, setMemberData] = useState<{ [key: string]: Member[] }>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -76,16 +78,18 @@ export default function Home() {
   }
 
   return (
-    <div className="flex h-screen relative">
-      <MemberSidebar
-        memberData={memberData}
-        groupMetadata={groupMetadata}
-        numRows={numRows}
-        setNumRows={setNumRows}
-        columnsPerRow={columnsPerRow}
-        setColumnsPerRow={setColumnsPerRow}
-      />
-      <SenbatsuMain numRows={numRows} columnsPerRow={columnsPerRow} />
-    </div>
+    <SenbatsuStyleProvider>
+      <div className="flex h-screen relative">
+        <MemberSidebar
+          memberData={memberData}
+          groupMetadata={groupMetadata}
+          numRows={numRows}
+          setNumRows={setNumRows}
+          columnsPerRow={columnsPerRow}
+          setColumnsPerRow={setColumnsPerRow}
+        />
+        <SenbatsuMain numRows={numRows} columnsPerRow={columnsPerRow} />
+      </div>
+    </SenbatsuStyleProvider>
   );
 }

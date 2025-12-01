@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import SenbatsuField from './SenbatsuField';
 import { monitorForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import { toJpeg } from 'html-to-image';
@@ -146,7 +146,7 @@ function SenbatsuMain({ numRows, columnsPerRow }: SenbatsuMainProps) {
 
   }, [senbatsuMembers]);
 
-  const onSaveClick = async () => {
+  const onSaveClick = useCallback(async () => {
     if (fieldRef.current) {
       const dataUrl = await toJpeg(fieldRef.current, { quality: 1, backgroundColor: '#ffffff' })
       const link = document.createElement('a');
@@ -156,7 +156,7 @@ function SenbatsuMain({ numRows, columnsPerRow }: SenbatsuMainProps) {
       link.click();
       document.body.removeChild(link);
     }
-  }
+  }, [fieldRef]);
 
   return (
     <main ref={containerRef}
@@ -172,19 +172,23 @@ function SenbatsuMain({ numRows, columnsPerRow }: SenbatsuMainProps) {
           overflow: 'visible',
         }}
       >
-        <Image
-          fill
-          src={"/images/backgrounds/nogizaka.webp"}
-          alt='background image'
-          className='-z-50 object-cover'
-        />
-        <div className='p-4'>
+        {/* Background Image - now INSIDE the scaled container */}
+        <div className="absolute inset-0 flex justify-center items-center -z-50"
+          style={{ transform: "scale(1.2)" }}
+        >
+          <Image
+            fill
+            src={"/images/backgrounds/nogizaka.png"}
+            alt='background image'
+            className='object-cover'
+          />
+        </div>
+
+        {/* SenbatsuField */}
+        <div className='h-full flex justify-center items-end'>
           <SenbatsuField senbatsuMembers={senbatsuMembers} numRows={numRows} columnsPerRow={columnsPerRow} />
         </div>
       </div>
-      <button onClick={onSaveClick} className='mt-4 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-md transition-colors duration-200'>
-        Save as image
-      </button>
     </main>
   );
 }

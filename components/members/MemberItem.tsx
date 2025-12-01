@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { draggable } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import ImageCard from '../ImageCard'
 import { BiMenu } from 'react-icons/bi';
+import { getMemberImagePath } from '@/lib/utils/memberImageUtils';
 
 interface MemberItemProps {
     member: Member;
@@ -57,7 +58,7 @@ function MemberItem({
             <ImageCard
                 className={dragging ? 'opacity-50' : ''}
                 ref={ref}
-                imageSrc={member.imageSrc || ""}
+                imageSrc={getMemberImagePath(member, { withBackground: true })}
                 title={member.name}
                 subtitle={member.group}
                 alt={member.name}

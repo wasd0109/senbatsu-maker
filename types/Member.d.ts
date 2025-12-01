@@ -4,5 +4,5 @@ type Member = {
     group: string;
     generation?: string;
     graduated?: boolean;
-    imageSrc: StaticImageData | string
+    imageSrc?: StaticImageData | string
 }
