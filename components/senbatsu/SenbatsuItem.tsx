@@ -57,7 +57,7 @@ function SenbatsuItem({ rowIndex, colIndex, member }: SenbatsuItemProps) {
     }, [member])
     if (member) {
         return (
-            <div className="relative m-0.5 sm:m-1" key={`${rowIndex}-${colIndex}`}>
+            <div className="relative mx-0.5 sm:mx-1 my-1 sm:my-2" key={`${rowIndex}-${colIndex}`}>
                 {/* Circular shadow beneath */}
                 <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-12 sm:w-20 h-3 sm:h-5 rounded-[50%] bg-black/30 blur-md"></div>
 

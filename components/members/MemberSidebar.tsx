@@ -3,6 +3,7 @@ import { StaticImageData } from 'next/image';
 import ImageCard from '@/components/ImageCard';
 import MemberList from './MemberList';
 import { calculateColorWithAlpha } from '@/lib/utils/colorUtils';
+import FormationConfig from '@/components/senbatsu/FormationConfig';
 
 interface MemberSidebarProps {
     memberData: { [key: string]: Member[] };
@@ -104,59 +105,26 @@ function MemberSidebar({ memberData, groupMetadata, numRows, setNumRows, columns
                     )
                 })}
 
+                {/* Style Dropdown */}
+                <div className="mt-auto mb-3">
+                    <div className="p-3 bg-white rounded-lg border border-gray-200">
+                        <h3 className="text-sm font-semibold mb-2 text-gray-700">Style</h3>
+                        <select className="w-full px-2 py-1 border border-gray-300 rounded text-xs">
+                            <option value="nogizaka">乃木坂46</option>
+                            <option value="sakurazaka">櫻坂46</option>
+                            <option value="hinatazaka">日向坂46</option>
+                        </select>
+                    </div>
+                </div>
+
                 {/* Formation Configuration */}
-                <div className="mt-auto mb-4 p-3 bg-white rounded-lg border border-gray-200">
-                    <h3 className="text-sm font-semibold mb-3 text-gray-700">Formation</h3>
-
-                    {/* Number of Rows */}
-                    <div className="mb-3">
-                        <label className="block text-xs font-medium text-gray-600 mb-1">
-                            Rows: {numRows}
-                        </label>
-                        <input
-                            type="range"
-                            min="1"
-                            max="5"
-                            value={numRows}
-                            onChange={(e) => {
-                                const newNumRows = parseInt(e.target.value);
-                                // Add default columns for new rows
-                                const newCols = { ...columnsPerRow };
-                                for (let i = 1; i <= newNumRows; i++) {
-                                    if (!newCols[i]) {
-                                        newCols[i] = 1;
-                                    }
-                                }
-                                setColumnsPerRow(newCols);
-                                setNumRows(newNumRows);
-                            }}
-                            className="w-full h-1"
-                        />
-                    </div>
-
-                    {/* Columns per Row */}
-                    <div>
-                        <label className="block text-xs font-medium text-gray-600 mb-2">Columns per Row</label>
-                        <div className="space-y-1.5">
-                            {Array.from({ length: numRows }, (_, i) => i + 1).map((rowNum) => (
-                                <div key={rowNum} className="flex items-center gap-2">
-                                    <span className="text-xs text-gray-500 w-12">Row {rowNum}:</span>
-                                    <input
-                                        type="number"
-                                        min="1"
-                                        max="15"
-                                        value={columnsPerRow[rowNum] || 1}
-                                        onChange={(e) => {
-                                            const newCols = { ...columnsPerRow };
-                                            newCols[rowNum] = parseInt(e.target.value) || 1;
-                                            setColumnsPerRow(newCols);
-                                        }}
-                                        className="flex-1 px-2 py-1 border border-gray-300 rounded text-xs"
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                    </div>
+                <div className="mb-4">
+                    <FormationConfig
+                        numRows={numRows}
+                        setNumRows={setNumRows}
+                        columnsPerRow={columnsPerRow}
+                        setColumnsPerRow={setColumnsPerRow}
+                    />
                 </div>
             </aside>
         </>
