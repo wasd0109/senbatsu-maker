@@ -11,9 +11,9 @@ function SenbatsuField({ senbatsuMembers, numRows, columnsPerRow }: SenbatsuFiel
     const row = numRows;
     const column = columnsPerRow;
     return (
-        <div className="space-y-1 sm:space-y-2">
+        <div className="space-y-2">
             {Array.from(Array(row)).map((_, rowIndex) => (
-                <div key={rowIndex} className='flex justify-center flex-nowrap gap-0.5 sm:gap-1'> {
+                <div key={rowIndex} className='flex justify-center flex-nowrap gap-1'> {
                     Array.from(Array(column[row - rowIndex])).map((_, colIndex) => (
                         <SenbatsuItem key={`${rowIndex}-${colIndex}`} member={senbatsuMembers[rowIndex][colIndex]} rowIndex={rowIndex} colIndex={colIndex} />
                     ))

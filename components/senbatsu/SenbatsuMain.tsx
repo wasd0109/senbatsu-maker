@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import SenbatsuField from './SenbatsuField';
 import { monitorForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 
@@ -38,6 +38,9 @@ function SenbatsuMain({ numRows, columnsPerRow }: SenbatsuMainProps) {
     numRows: 3,
     columnsPerRow: { 1: 3, 2: 7, 3: 7 }
   });
+  const [scale, setScale] = useState(1);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const fieldRef = useRef<HTMLDivElement>(null);
 
   // Adjust grid when configuration changes, preserving existing members
   if (prevConfig.numRows !== numRows || JSON.stringify(prevConfig.columnsPerRow) !== JSON.stringify(columnsPerRow)) {
@@ -62,6 +65,47 @@ function SenbatsuMain({ numRows, columnsPerRow }: SenbatsuMainProps) {
 
     setPrevConfig({ numRows, columnsPerRow });
   }
+
+  // Calculate scale based on viewport and field dimensions
+  useEffect(() => {
+    const calculateScale = () => {
+      if (!containerRef.current || !fieldRef.current) return;
+
+      const container = containerRef.current;
+      const field = fieldRef.current;
+
+      // Get container dimensions (available space)
+      const containerWidth = container.clientWidth;
+      const containerHeight = container.clientHeight;
+
+      // Get field natural dimensions
+      const fieldWidth = field.scrollWidth;
+      const fieldHeight = field.scrollHeight;
+
+      // Calculate scale to fit both width and height with some padding
+      const scaleX = (containerWidth * 0.95) / fieldWidth;
+      const scaleY = (containerHeight * 0.95) / fieldHeight;
+
+      // Use the smaller scale to ensure it fits in both dimensions
+      const newScale = Math.min(scaleX, scaleY, 1); // Cap at 1 to avoid scaling up
+
+      setScale(newScale);
+    };
+
+    // Calculate on mount and when dependencies change
+    calculateScale();
+
+    // Recalculate on window resize
+    window.addEventListener('resize', calculateScale);
+
+    // Use setTimeout to recalculate after render completes
+    const timeoutId = setTimeout(calculateScale, 100);
+
+    return () => {
+      window.removeEventListener('resize', calculateScale);
+      clearTimeout(timeoutId);
+    };
+  }, [numRows, columnsPerRow, senbatsuMembers]);
 
   useEffect(() => {
     return monitorForElements({
@@ -101,8 +145,15 @@ function SenbatsuMain({ numRows, columnsPerRow }: SenbatsuMainProps) {
   }, [senbatsuMembers]);
 
   return (
-    <main className="flex-1 flex items-center justify-center p-4 md:p-8 overflow-y-auto">
-      <div className="w-full max-w-4xl">
+    <main ref={containerRef} className="flex-1 flex items-center justify-center p-4 md:p-8 overflow-hidden">
+      <div
+        ref={fieldRef}
+        style={{
+          transform: `scale(${scale})`,
+          transformOrigin: 'center center',
+          transition: 'transform 0.3s ease-out'
+        }}
+      >
         <SenbatsuField senbatsuMembers={senbatsuMembers} numRows={numRows} columnsPerRow={columnsPerRow} />
       </div>
     </main>
