@@ -65,10 +65,10 @@ function MemberItem({
             <ImageCard
                 className={dragging ? 'opacity-50' : ''}
                 ref={ref}
-                imageSrc={getMemberImagePath(member, { withBackground: true })}
+                imageSrc={getMemberImagePath(member, { withBackground: false })}
                 title={member.name}
-                subtitle={member.group}
                 alt={member.name}
+                imageShape={isMobile ? 'rectangle' : 'square'}
                 onClick={onClick}
                 startElement={
                     <button

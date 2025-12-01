@@ -13,6 +13,8 @@ interface ImageCardProps {
     className?: string;
     startElement?: React.ReactNode;
     endElement?: React.ReactNode;
+    imageShape?: 'square' | 'circle' | 'rectangle';
+    imageAnchor?: 'top' | 'center' | 'bottom';
 }
 
 const ImageCard = React.forwardRef<HTMLDivElement, ImageCardProps>(({
@@ -21,7 +23,9 @@ const ImageCard = React.forwardRef<HTMLDivElement, ImageCardProps>(({
     subtitle,
     alt,
     onClick,
+    imageAnchor = 'top',
     fit = 'cover',
+    imageShape = 'square',
     selected = false,
     selectedColor,
     className,
@@ -41,11 +45,11 @@ const ImageCard = React.forwardRef<HTMLDivElement, ImageCardProps>(({
                 </div>
             )}
             {/* Image container with fixed height matching button */}
-            <div className="relative h-full w-20 shrink-0 overflow-hidden p-1">
+            <div className={`relative h-full ${imageShape == "square" ? " w-20" : "w-10"} shrink-0 overflow-hidden p-1`}>
                 <Image
                     src={imageSrc}
                     alt={alt || title}
-                    className={`object-top h-full w-full ${fit === 'cover' ? 'object-cover' : 'object-contain'}`}
+                    className={`${imageAnchor === "top" ? "object-top" : imageAnchor === "center" ? "object-center" : "object-bottom"} h-full w-full ${fit === 'cover' ? 'object-cover' : 'object-contain'}`}
                     width={80}
                     height={80}
                 />

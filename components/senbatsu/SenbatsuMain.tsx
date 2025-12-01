@@ -148,7 +148,7 @@ function SenbatsuMain({ numRows, columnsPerRow, senbatsuMembers, setSenbatsuMemb
       </div>
 
       {/* Field Adjustment Configuration */}
-      <div className="absolute bottom-4 right-4 z-10">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 w-full max-w-4xl px-4">
         <FieldAdjustmentConfig />
       </div>
     </main>
