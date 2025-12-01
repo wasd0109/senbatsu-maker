@@ -117,7 +117,7 @@ function SenbatsuMain({ numRows, columnsPerRow, senbatsuMembers, setSenbatsuMemb
 
   return (
     <main ref={containerRef}
-      className="flex-1 flex flex-col items-center justify-center overflow-hidden">
+      className="flex-1 flex flex-col items-center justify-around overflow-hidden">
       <div
         ref={fieldRef}
         style={{
@@ -127,6 +127,7 @@ function SenbatsuMain({ numRows, columnsPerRow, senbatsuMembers, setSenbatsuMemb
           transformOrigin: 'center center',
           transition: 'transform 0.3s ease-out',
           overflow: 'visible',
+          marginTop: "20px"
         }}
       >
         {/* Background Image - now INSIDE the scaled container */}
@@ -148,7 +149,7 @@ function SenbatsuMain({ numRows, columnsPerRow, senbatsuMembers, setSenbatsuMemb
       </div>
 
       {/* Field Adjustment Configuration */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 w-full max-w-4xl px-4">
+      <div className="relative z-10 w-full max-w-4xl px-4">
         <FieldAdjustmentConfig />
       </div>
     </main>

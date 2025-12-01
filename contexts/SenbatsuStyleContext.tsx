@@ -34,7 +34,7 @@ const senbatsuStyle: { [key: string]: SenbatsuStyle } = {
     senbatsuItemOverlapGap: { x: 25, y: 10 },
     senbatsuFieldOffset: { x: 0, y: 0 },
     senbatsuFieldScale: 1,
-    senbatsuFieldStaggerEnabled: true,
+    senbatsuFieldStaggerEnabled: false,
   },
   "sakurazaka": {
     label: '櫻坂46',
