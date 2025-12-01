@@ -11,6 +11,7 @@ interface ImageCardProps {
     selected?: boolean;
     selectedColor?: string;
     className?: string;
+    startElement?: React.ReactNode;
     endElement?: React.ReactNode;
 }
 
@@ -24,6 +25,7 @@ const ImageCard = React.forwardRef<HTMLDivElement, ImageCardProps>(({
     selected = false,
     selectedColor,
     className,
+    startElement,
     endElement
 }, ref) => {
     return (
@@ -33,6 +35,11 @@ const ImageCard = React.forwardRef<HTMLDivElement, ImageCardProps>(({
             style={{ backgroundColor: selected ? selectedColor : undefined }}
             className={`${selected ? "" : "bg-white hover:bg-gray-50 border-gray-200 border"} transition-colors flex items-center overflow-hidden rounded-lg h-20 w-full max-w-xs ${className}`}
         >
+            {startElement && (
+                <div className="pl-2">
+                    {startElement}
+                </div>
+            )}
             {/* Image container with fixed height matching button */}
             <div className="relative h-full w-20 shrink-0 overflow-hidden p-1">
                 <Image

@@ -12,61 +12,17 @@ const isLocation = (obj: unknown): obj is { rowIndex: number; colIndex: number }
 const isMember = (obj: unknown): obj is Member => {
   return typeof obj === 'object' && obj !== null && 'name' in obj && typeof obj.name === 'string';
 }
-
-// Initialize senbatsu grid with empty slots
-const initializeSenbatsuGrid = (rows: number, columnsPerRow: { [key: number]: number }): SenbatsuGrid => {
-  const grid: SenbatsuGrid = {};
-  for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
-    grid[rowIndex] = {};
-    const numColumns = columnsPerRow[rows - rowIndex] || 0;
-    for (let colIndex = 0; colIndex < numColumns; colIndex++) {
-      // Initialize with empty object - will be undefined until a member is placed
-      // We don't set anything here, just ensure the row exists
-    }
-  }
-  return grid;
-}
-
 interface SenbatsuMainProps {
   numRows: number;
   columnsPerRow: { [key: number]: number };
+  senbatsuMembers: SenbatsuGrid;
+  setSenbatsuMembers: React.Dispatch<React.SetStateAction<SenbatsuGrid>>;
 }
 
-function SenbatsuMain({ numRows, columnsPerRow }: SenbatsuMainProps) {
-  const [senbatsuMembers, setSenbatsuMembers] = useState<SenbatsuGrid>(() =>
-    initializeSenbatsuGrid(3, { 1: 3, 2: 7, 3: 7 })
-  );
-  const [prevConfig, setPrevConfig] = useState<{ numRows: number; columnsPerRow: { [key: number]: number } }>({
-    numRows: 3,
-    columnsPerRow: { 1: 3, 2: 7, 3: 7 }
-  });
+function SenbatsuMain({ numRows, columnsPerRow, senbatsuMembers, setSenbatsuMembers }: SenbatsuMainProps) {
   const [scale, setScale] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
   const fieldRef = useRef<HTMLDivElement>(null);
-
-  // Adjust grid when configuration changes, preserving existing members
-  if (prevConfig.numRows !== numRows || JSON.stringify(prevConfig.columnsPerRow) !== JSON.stringify(columnsPerRow)) {
-    setSenbatsuMembers(prevState => {
-      const newState: SenbatsuGrid = {};
-
-      // Initialize all rows based on new configuration
-      for (let rowIndex = 0; rowIndex < numRows; rowIndex++) {
-        newState[rowIndex] = {};
-        const numColumns = columnsPerRow[numRows - rowIndex] || 0;
-
-        for (let colIndex = 0; colIndex < numColumns; colIndex++) {
-          // Preserve existing member if it exists at this position
-          if (prevState[rowIndex]?.[colIndex]) {
-            newState[rowIndex][colIndex] = prevState[rowIndex][colIndex];
-          }
-        }
-      }
-
-      return newState;
-    });
-
-    setPrevConfig({ numRows, columnsPerRow });
-  }
 
   // Calculate scale based on viewport and field dimensions
   useEffect(() => {
@@ -144,7 +100,7 @@ function SenbatsuMain({ numRows, columnsPerRow }: SenbatsuMainProps) {
       },
     });
 
-  }, [senbatsuMembers]);
+  }, [senbatsuMembers, setSenbatsuMembers]);
 
   const onSaveClick = useCallback(async () => {
     if (fieldRef.current) {

@@ -5,9 +5,10 @@ interface MemberListProps {
     groupByGeneration: boolean
     showGraduated: boolean
     setIsSidebarOpen: (isOpen: boolean) => void
+    onAddMember: (member: Member) => void
 }
 
-function MemberList({ members, groupByGeneration, showGraduated, setIsSidebarOpen }: MemberListProps) {
+function MemberList({ members, groupByGeneration, showGraduated, setIsSidebarOpen, onAddMember }: MemberListProps) {
 
     // Filter members based on graduated status
     const filteredMembers = showGraduated ? members : members.filter(member => !member.graduated);
@@ -23,7 +24,7 @@ function MemberList({ members, groupByGeneration, showGraduated, setIsSidebarOpe
         return (
             <div className="space-y-1">
                 {sortedMembers.map((member) => (
-                    <MemberItem key={member.name} member={member} setIsSidebarOpen={setIsSidebarOpen} />
+                    <MemberItem key={member.name} member={member} setIsSidebarOpen={setIsSidebarOpen} onAddMember={onAddMember} />
                 ))}
             </div>
         );
@@ -63,7 +64,7 @@ function MemberList({ members, groupByGeneration, showGraduated, setIsSidebarOpe
                         </h3>
                         <div className="space-y-1">
                             {sortedMembersInGen.map((member) => (
-                                <MemberItem key={member.name} member={member} setIsSidebarOpen={setIsSidebarOpen} />
+                                <MemberItem key={member.name} member={member} setIsSidebarOpen={setIsSidebarOpen} onAddMember={onAddMember} />
                             ))}
                         </div>
                     </div>

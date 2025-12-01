@@ -14,9 +14,10 @@ interface MemberSidebarProps {
     setNumRows: (rows: number) => void;
     columnsPerRow: { [key: number]: number };
     setColumnsPerRow: (cols: { [key: number]: number }) => void;
+    onAddMember: (member: Member) => void;
 }
 
-function MemberSidebar({ memberData, groupMetadata, numRows, setNumRows, columnsPerRow, setColumnsPerRow }: MemberSidebarProps) {
+function MemberSidebar({ memberData, groupMetadata, numRows, setNumRows, columnsPerRow, setColumnsPerRow, onAddMember }: MemberSidebarProps) {
     const { selectedStyle, setSelectedStyle, senbatsuStyle } = useSenbatsuStyle();
     const [showMemberList, setShowMemberList] = useState(Object.fromEntries(Object.keys(memberData).map(group => [group, false])));
     const [groupByGeneration, setGroupByGeneration] = useState(true);
@@ -102,6 +103,7 @@ function MemberSidebar({ memberData, groupMetadata, numRows, setNumRows, columns
                                     groupByGeneration={groupByGeneration}
                                     showGraduated={showGraduated}
                                     setIsSidebarOpen={setIsSidebarOpen}
+                                    onAddMember={onAddMember}
                                 />
                             )}
                         </div>

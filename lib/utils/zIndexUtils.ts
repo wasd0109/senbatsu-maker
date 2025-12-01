@@ -18,7 +18,7 @@ export function calculateZIndex(
 ): number {
   // Base z-index for rows (higher row number = higher z-index)
   // Multiply by a large number to ensure row priority is maintained
-  const rowZIndex = rowIndex * 100;
+  const rowZIndex = (totalRows-rowIndex) * 100;
 
   // Calculate distance from middle column
   const middleCol = (totalCols - 1) / 2;

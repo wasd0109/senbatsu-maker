@@ -25,12 +25,13 @@ function SenbatsuField({ senbatsuMembers, numRows, columnsPerRow }: SenbatsuFiel
     const transformStyle = `translate(${offset.x}px, ${offset.y}px) scale(${scale})`;
 
     return (
-        <div style={{ transform: transformStyle }}>
+        <div className='flex flex-col-reverse' style={{ transform: transformStyle }}>
             {Array.from(Array(row)).map((_, rowIndex) => {
                 // Calculate stagger offset - alternating rows are shifted by half the item width
                 const itemWidth = selectedStyle.senbatsuItemSize.width;
                 const overlapOffset = shouldOverlap ? 50 : 0; // Account for the overlap margin
                 const staggerOffset = rowIndex % 2 === 1 ? (itemWidth - overlapOffset) / 2 : 0;
+                const numColumns = columnsPerRow[rowIndex];
 
                 return (
                     <div
@@ -42,8 +43,8 @@ function SenbatsuField({ senbatsuMembers, numRows, columnsPerRow }: SenbatsuFiel
                             height: "100%",
                         }}
                     > {
-                            Array.from(Array(column[row - rowIndex])).map((_, colIndex) =>
-                                <SenbatsuItem key={`${rowIndex}-${colIndex}`} member={senbatsuMembers[rowIndex][colIndex]} rowIndex={rowIndex} colIndex={colIndex} zIndex={calculateZIndex(rowIndex, colIndex, numRows, columnsPerRow[row - rowIndex])} />
+                            Array.from(Array(numColumns)).map((_, colIndex) =>
+                                <SenbatsuItem key={`${rowIndex}-${colIndex}`} member={senbatsuMembers[rowIndex][colIndex]} rowIndex={rowIndex} colIndex={colIndex} zIndex={calculateZIndex(rowIndex, colIndex, numRows, numColumns)} />
                             )
                         } </div>
                 );

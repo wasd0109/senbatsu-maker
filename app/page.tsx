@@ -6,7 +6,7 @@ import sakuraLogo from "@/assets/groups/sakurazaka.png"
 import nogiLogo from "@/assets/groups/nogizaka.png"
 import hinataLogo from "@/assets/groups/hinatazaka.svg"
 import { StaticImageData } from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { SenbatsuStyleProvider } from '@/contexts/SenbatsuStyleContext';
 
 // API response types
@@ -26,13 +26,49 @@ const groupMetadata: { [key: string]: { logo: StaticImageData; color: string } }
   "日向坂46": { logo: hinataLogo, color: "#7cc7e8" },
 }
 
+// Initialize senbatsu grid with empty slots
+const initializeSenbatsuGrid = (rows: number, columnsPerRow: { [key: number]: number }): SenbatsuGrid => {
+  const grid: SenbatsuGrid = {};
+  for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
+    grid[rowIndex] = {};
+    const numColumns = columnsPerRow[rows - rowIndex] || 0;
+    for (let colIndex = 0; colIndex < numColumns; colIndex++) {
+      // Initialize with empty object - will be undefined until a member is placed
+      // We don't set anything here, just ensure the row exists
+    }
+  }
+  return grid;
+}
+
 
 export default function Home() {
   const [numRows, setNumRows] = useState(3);
-  const [columnsPerRow, setColumnsPerRow] = useState<{ [key: number]: number }>({ 1: 5, 2: 6, 3: 9 });
+  const [columnsPerRow, setColumnsPerRow] = useState<{ [key: number]: number }>({ 0: 5, 1: 6, 2: 9 });
   const [memberData, setMemberData] = useState<{ [key: string]: Member[] }>({});
+  const [senbatsuMembers, setSenbatsuMembers] = useState<SenbatsuGrid>(initializeSenbatsuGrid(numRows, columnsPerRow));
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Function to add a member to the next available slot
+  const addMemberToSenbatsu = useCallback((member: Member) => {
+    // Find the first available slot
+    for (let rowIndex = 0; rowIndex < numRows; rowIndex++) {
+      const numColumns = columnsPerRow[rowIndex] || 0;
+      for (let colIndex = 0; colIndex < numColumns; colIndex++) {
+        if (!senbatsuMembers[rowIndex]?.[colIndex]) {
+          // Found an empty slot
+          setSenbatsuMembers(prev => ({
+            ...prev,
+            [rowIndex]: {
+              ...prev[rowIndex],
+              [colIndex]: member
+            }
+          }));
+          return;
+        }
+      }
+    }
+  }, [numRows, columnsPerRow, senbatsuMembers]);
 
   useEffect(() => {
     async function fetchMembers() {
@@ -87,8 +123,14 @@ export default function Home() {
           setNumRows={setNumRows}
           columnsPerRow={columnsPerRow}
           setColumnsPerRow={setColumnsPerRow}
+          onAddMember={addMemberToSenbatsu}
         />
-        <SenbatsuMain numRows={numRows} columnsPerRow={columnsPerRow} />
+        <SenbatsuMain
+          numRows={numRows}
+          columnsPerRow={columnsPerRow}
+          senbatsuMembers={senbatsuMembers}
+          setSenbatsuMembers={setSenbatsuMembers}
+        />
       </div>
     </SenbatsuStyleProvider>
   );
