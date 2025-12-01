@@ -63,7 +63,7 @@ function MemberItem({
                 alt={member.name}
                 onClick={onClick}
                 endElement={
-                    isMobile && (<div ref={dragHandleRef} className='ml-auto'>
+                    isMobile && (<div ref={dragHandleRef} className="flex items-center justify-center w-10 h-10">
                         <BiMenu />
                     </div>)}
             />
