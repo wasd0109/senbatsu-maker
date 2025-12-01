@@ -6,7 +6,3 @@ type Member = {
     graduated?: boolean;
     imageSrc: StaticImageData | string
 }
-
-type MemberWithGroupName = Member & {
-    groupName: string;
-}

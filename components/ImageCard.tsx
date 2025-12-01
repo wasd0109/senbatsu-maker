@@ -11,6 +11,7 @@ interface ImageCardProps {
     selected?: boolean;
     selectedColor?: string;
     className?: string;
+    endElement?: React.ReactNode;
 }
 
 const ImageCard = React.forwardRef<HTMLDivElement, ImageCardProps>(({
@@ -22,7 +23,8 @@ const ImageCard = React.forwardRef<HTMLDivElement, ImageCardProps>(({
     fit = 'cover',
     selected = false,
     selectedColor,
-    className
+    className,
+    endElement
 }, ref) => {
     return (
         <div
@@ -53,6 +55,11 @@ const ImageCard = React.forwardRef<HTMLDivElement, ImageCardProps>(({
                     </h2>
                 )}
             </div>
+            {endElement && (
+                <div className="pr-4">
+                    {endElement}
+                </div>
+            )}
         </div>
     )
 });
