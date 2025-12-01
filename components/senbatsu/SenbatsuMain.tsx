@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import SenbatsuField from './SenbatsuField';
 import { monitorForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
+import { toJpeg } from 'html-to-image';
+import Image from 'next/image';
 
 
 const isLocation = (obj: unknown): obj is { rowIndex: number; colIndex: number } => {
@@ -144,18 +146,45 @@ function SenbatsuMain({ numRows, columnsPerRow }: SenbatsuMainProps) {
 
   }, [senbatsuMembers]);
 
+  const onSaveClick = async () => {
+    if (fieldRef.current) {
+      const dataUrl = await toJpeg(fieldRef.current, { quality: 1, backgroundColor: '#ffffff' })
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = "senbatsu.jpeg";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  }
+
   return (
-    <main ref={containerRef} className="flex-1 flex items-center justify-center p-4 md:p-8 overflow-hidden">
+    <main ref={containerRef}
+      className="flex-1 flex flex-col items-center justify-center overflow-hidden">
       <div
         ref={fieldRef}
         style={{
+          position: 'relative',
+          aspectRatio: '16/9',
           transform: `scale(${scale})`,
           transformOrigin: 'center center',
-          transition: 'transform 0.3s ease-out'
+          transition: 'transform 0.3s ease-out',
+          overflow: 'visible',
         }}
       >
-        <SenbatsuField senbatsuMembers={senbatsuMembers} numRows={numRows} columnsPerRow={columnsPerRow} />
+        <Image
+          fill
+          src={"/images/backgrounds/nogizaka.webp"}
+          alt='background image'
+          className='-z-50 object-cover'
+        />
+        <div className='p-4'>
+          <SenbatsuField senbatsuMembers={senbatsuMembers} numRows={numRows} columnsPerRow={columnsPerRow} />
+        </div>
       </div>
+      <button onClick={onSaveClick} className='mt-4 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-md transition-colors duration-200'>
+        Save as image
+      </button>
     </main>
   );
 }
