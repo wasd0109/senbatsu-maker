@@ -61,7 +61,7 @@ function FormationConfig({ numRows, setNumRows, columnsPerRow, setColumnsPerRow 
                     {Array.from({ length: numRows }, (_, i) => i).map((rowNum) => (
                         <div key={rowNum} className="flex flex-col gap-1">
                             <div className="flex items-center gap-2">
-                                <span className="text-xs text-gray-500 w-12">Row {rowNum}:</span>
+                                <span className="text-xs text-gray-500 w-12">Row {rowNum + 1}:</span>
                                 <input
                                     type="text"
                                     className={`${columnInputError[rowNum] ? 'border-red-500' : 'border-gray-300'} flex-1 px-2 py-1 border rounded text-xs`}

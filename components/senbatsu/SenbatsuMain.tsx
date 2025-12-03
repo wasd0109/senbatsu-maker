@@ -4,6 +4,7 @@ import { monitorForElements } from '@atlaskit/pragmatic-drag-and-drop/element/ad
 import { toJpeg } from 'html-to-image';
 import Image from 'next/image';
 import FieldAdjustmentConfig from './FieldAdjustmentConfig';
+import RowCountDisplay from './RowCountDisplay';
 
 
 const isLocation = (obj: unknown): obj is { rowIndex: number; colIndex: number } => {
@@ -117,39 +118,46 @@ function SenbatsuMain({ numRows, columnsPerRow, senbatsuMembers, setSenbatsuMemb
 
   return (
     <main ref={containerRef}
-      className="flex-1 flex flex-col items-center justify-around overflow-hidden">
-      <div
-        ref={fieldRef}
-        style={{
-          position: 'relative',
-          aspectRatio: '16/9',
-          transform: `scale(${scale})`,
-          transformOrigin: 'center center',
-          transition: 'transform 0.3s ease-out',
-          overflow: 'visible',
-          marginTop: "20px"
-        }}
-      >
-        {/* Background Image - now INSIDE the scaled container */}
-        <div className="absolute inset-0 flex justify-center items-center -z-50"
-          style={{ transform: "scale(1.2)" }}
-        >
-          <Image
-            fill
-            src={"/images/backgrounds/nogizaka.png"}
-            alt='background image'
-            className='object-cover'
-          />
-        </div>
+      className="flex-1 flex flex-col relative items-center justify-around overflow-hidden">
+      <div className="relative flex items-center gap-4">
+        {/* Row Count Display */}
+        {/* <div className="absolute top-5 -left-5 z-100">
+          <RowCountDisplay numRows={numRows} columnsPerRow={columnsPerRow} />
+        </div> */}
 
-        {/* SenbatsuField */}
-        <div className='h-full flex justify-center items-end'>
-          <SenbatsuField senbatsuMembers={senbatsuMembers} numRows={numRows} columnsPerRow={columnsPerRow} />
+        <div
+          ref={fieldRef}
+          style={{
+            position: 'relative',
+            aspectRatio: '16/9',
+            transform: `scale(${scale})`,
+            transformOrigin: 'center center',
+            transition: 'transform 0.3s ease-out',
+            overflow: 'visible',
+            marginTop: "20px"
+          }}
+        >
+          {/* Background Image - now INSIDE the scaled container */}
+          <div className="absolute inset-0 flex justify-center items-center -z-50 w-[45em] aspect-video"
+            style={{ transform: "scale(1.2)" }}
+          >
+            <Image
+              fill
+              src={"/images/backgrounds/nogizaka.png"}
+              alt='background image'
+              className='object-cover'
+            />
+          </div>
+
+          {/* SenbatsuField */}
+          <div className='h-full flex justify-center items-end'>
+            <SenbatsuField senbatsuMembers={senbatsuMembers} numRows={numRows} columnsPerRow={columnsPerRow} />
+          </div>
         </div>
       </div>
 
       {/* Field Adjustment Configuration */}
-      <div className="relative z-10 w-full max-w-4xl px-4">
+      <div className="absolute bottom-10 z-10 w-3/5 max-w-4xl ">
         <FieldAdjustmentConfig />
       </div>
     </main>
