@@ -1,4 +1,5 @@
 import MemberItem from './MemberItem'
+import MemberSublist from './MemberSublist'
 
 interface MemberListProps {
     members: Member[]
@@ -13,19 +14,20 @@ function MemberList({ members, groupByGeneration, showGraduated, setIsSidebarOpe
     // Filter members based on graduated status
     const filteredMembers = showGraduated ? members : members.filter(member => !member.graduated);
 
-    // Sort all members by hiragana
-    const sortedMembers = [...filteredMembers].sort((a, b) => {
-        const aSort = a.hiragana || a.name;
-        const bSort = b.hiragana || b.name;
+    const sortMembersByHiragana = (a: Member, b: Member) => {
+        const aSort = a.hiragana;
+        const bSort = b.hiragana;
         return aSort.localeCompare(bSort, 'ja');
-    });
+    }
+
+    const onItemDrag = () => {
+        setIsSidebarOpen(false)
+    }
 
     if (!groupByGeneration) {
         return (
-            <div className="space-y-1">
-                {sortedMembers.map((member) => (
-                    <MemberItem key={member.name} member={member} setIsSidebarOpen={setIsSidebarOpen} onAddMember={onAddMember} />
-                ))}
+            <div className="my-1">
+                <MemberSublist sortedMembers={[...filteredMembers].sort(sortMembersByHiragana)} onItemDrag={onItemDrag} onAddMember={onAddMember} />
             </div>
         );
     }
@@ -42,30 +44,28 @@ function MemberList({ members, groupByGeneration, showGraduated, setIsSidebarOpe
 
     // Sort generations by first character (number) in ascending order
     const sortedGenerations = Object.keys(membersByGeneration).sort((a, b) => {
-        const aNum = parseInt(a.charAt(0)) || 999;
-        const bNum = parseInt(b.charAt(0)) || 999;
-        return aNum - bNum;
+        try {
+            const aNum = parseInt(a.charAt(0));
+            const bNum = parseInt(b.charAt(0));
+            return aNum - bNum;
+        } catch (err) {
+            console.log("cannot parse generation number")
+            return -1
+        }
     });
+
+
 
     return (
         <>
             {sortedGenerations.map((generation) => {
-                // Sort members within each generation by hiragana
-                const sortedMembersInGen = [...membersByGeneration[generation]].sort((a, b) => {
-                    const aSort = a.hiragana || a.name;
-                    const bSort = b.hiragana || b.name;
-                    return aSort.localeCompare(bSort, 'ja');
-                });
-
                 return (
-                    <div key={generation} className="mb-6">
+                    <div key={generation} className="mb-3">
                         <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-400 mt-2 px-2">
                             {generation}
                         </h3>
                         <div className="space-y-1">
-                            {sortedMembersInGen.map((member) => (
-                                <MemberItem key={member.name} member={member} setIsSidebarOpen={setIsSidebarOpen} onAddMember={onAddMember} />
-                            ))}
+                            <MemberSublist sortedMembers={[...membersByGeneration[generation]].sort(sortMembersByHiragana)} onItemDrag={onItemDrag} onAddMember={onAddMember} />
                         </div>
                     </div>
                 );

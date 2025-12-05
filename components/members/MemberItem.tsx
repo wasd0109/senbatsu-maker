@@ -3,18 +3,19 @@ import { draggable } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import ImageCard from '../ImageCard'
 import { BiMenu, BiPlus } from 'react-icons/bi';
 import { getMemberImagePath } from '@/lib/utils/memberImageUtils';
+import { checkIsMobile } from '@/lib/utils/screenUtils';
 
 interface MemberItemProps {
     member: Member;
     onClick?: () => void;
-    setIsSidebarOpen: (isOpen: boolean) => void;
+    onDrag: () => void;
     onAddMember: (member: Member) => void;
 }
 
 function MemberItem({
     member,
     onClick,
-    setIsSidebarOpen,
+    onDrag,
     onAddMember
 }: MemberItemProps) {
     const ref = useRef<HTMLDivElement>(null);
@@ -25,10 +26,9 @@ function MemberItem({
     // Detect screen size
     useEffect(() => {
         const checkIfMobile = () => {
-            setIsMobile(window.innerWidth < 768); // 768px is the 'md' breakpoint in Tailwind
-        };
+            setIsMobile(checkIsMobile());
+        }
 
-        // Check on mount
         checkIfMobile();
 
         // Add event listener for window resize
@@ -49,12 +49,13 @@ function MemberItem({
                 getInitialData: () => ({ member }),
                 onDragStart: () => {
                     setDragging(true);
-                    setIsSidebarOpen(false)
+                    onDrag();
                 },
                 onDrop: () => setDragging(false),
             });
         }
-    }, [member, setIsSidebarOpen, isMobile]);
+    }, [member, onDrag, isMobile]);
+
     const handleAddClick = (e: React.MouseEvent) => {
         e.stopPropagation(); // Prevent triggering the card's onClick
         onAddMember(member);

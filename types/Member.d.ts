@@ -1,6 +1,6 @@
 type Member = {
     name: string;
-    hiragana?: string;
+    hiragana: string;
     group: string;
     generation?: string;
     graduated?: boolean;
