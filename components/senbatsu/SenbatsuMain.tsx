@@ -129,7 +129,6 @@ function SenbatsuMain({ numRows, columnsPerRow, senbatsuMembers, setSenbatsuMemb
           overflow: 'visible',
           marginTop: "20px"
         }}
-        className='md:w-1/2'
       >
         {/* Background Image - now INSIDE the scaled container */}
         <div className="absolute inset-0 flex justify-center items-center -z-50"
