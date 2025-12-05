@@ -21,6 +21,8 @@ function SenbatsuItem({ rowIndex, colIndex, member, zIndex }: SenbatsuItemProps)
     const isRectangular = selectedStyle.senbatsuItemShape === 'rectangular';
     const shouldOverlap = selectedStyle.senbatsuItemOverlap === true;
     const overlapGap = selectedStyle.senbatsuItemOverlapGap || { x: 25, y: 10 };
+    const itemWidth = selectedStyle.senbatsuItemSize?.width;
+    const itemHeight = isRectangular ? selectedStyle.senbatsuItemSize?.height : selectedStyle.senbatsuItemSize?.width
 
     // Alternating pattern for better visibility when overlapped
     const isEven = colIndex % 2 === 0;
@@ -78,13 +80,15 @@ function SenbatsuItem({ rowIndex, colIndex, member, zIndex }: SenbatsuItemProps)
 
     return (
         <div
-            className={`relative flex flex-col items-center justify-center w-[100px] h-[200px] first:ml-0`}
+            className={`relative flex flex-col items-center justify-center first:ml-0`}
             style={{
                 position: 'relative',
                 gap: shouldOverlap ? undefined : '1px',
                 marginLeft: shouldOverlap && colIndex > 0 ? `-${overlapGap.x}px` : undefined,
                 marginTop: shouldOverlap ? `-${overlapGap.y}px` : undefined,
                 marginBottom: shouldOverlap ? `-${overlapGap.y}px` : undefined,
+                width: itemWidth,
+                height: itemHeight,
             }}
         >
             {/* Slot container - works for both occupied and empty slots */}
@@ -108,7 +112,7 @@ function SenbatsuItem({ rowIndex, colIndex, member, zIndex }: SenbatsuItemProps)
                         alt={member.name}
                         style={{
                             objectFit: 'cover',
-                            objectPosition: 'center center',
+                            objectPosition: isRectangular ? 'center' : 'top',
                             zIndex: zIndex,
                         }}
                     />
