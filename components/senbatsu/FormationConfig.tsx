@@ -57,9 +57,9 @@ function FormationConfig({ numRows, setNumRows, columnsPerRow, setColumnsPerRow 
             {/* Columns per Row */}
             <div>
                 <label className="block text-xs font-medium text-gray-600 mb-2">Columns per Row</label>
-                <div className="space-y-1.5">
+                <div className="flex space-y-1.5">
                     {Array.from({ length: numRows }, (_, i) => i).map((rowNum) => (
-                        <div key={rowNum} className="flex flex-col gap-1">
+                        <div key={rowNum} className="flex gap-1">
                             <div className="flex items-center gap-2">
                                 <span className="text-xs text-gray-500 w-12">Row {rowNum}:</span>
                                 <input

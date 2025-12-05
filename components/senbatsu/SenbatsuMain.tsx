@@ -4,6 +4,7 @@ import { monitorForElements } from '@atlaskit/pragmatic-drag-and-drop/element/ad
 import { toJpeg } from 'html-to-image';
 import Image from 'next/image';
 import FieldAdjustmentConfig from './FieldAdjustmentConfig';
+import { useSenbatsuStyle } from '@/contexts/SenbatsuStyleContext';
 
 
 const isLocation = (obj: unknown): obj is { rowIndex: number; colIndex: number } => {
@@ -15,15 +16,22 @@ const isMember = (obj: unknown): obj is Member => {
 }
 interface SenbatsuMainProps {
   numRows: number;
+  setNumRows: (rows: number) => void;
   columnsPerRow: { [key: number]: number };
+  setColumnsPerRow: (cols: { [key: number]: number }) => void;
   senbatsuMembers: SenbatsuGrid;
   setSenbatsuMembers: React.Dispatch<React.SetStateAction<SenbatsuGrid>>;
 }
 
-function SenbatsuMain({ numRows, columnsPerRow, senbatsuMembers, setSenbatsuMembers }: SenbatsuMainProps) {
+function SenbatsuMain({ numRows, setNumRows, columnsPerRow, setColumnsPerRow, senbatsuMembers, setSenbatsuMembers }: SenbatsuMainProps) {
+  const { selectedStyle } = useSenbatsuStyle();
   const [scale, setScale] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
   const fieldRef = useRef<HTMLDivElement>(null);
+
+  // Get background image properties from context
+  const bgOffset = selectedStyle.backgroundImageOffset || { x: 0, y: 0 };
+  const bgScale = selectedStyle.backgroundImageScale || 1;
 
   // Calculate scale based on viewport and field dimensions
   useEffect(() => {
@@ -117,7 +125,7 @@ function SenbatsuMain({ numRows, columnsPerRow, senbatsuMembers, setSenbatsuMemb
 
   return (
     <main ref={containerRef}
-      className="flex-1 flex flex-col items-center justify-around overflow-hidden">
+      className="flex-1 flex flex-col items-center justify-around overflow-scroll">
       <div
         ref={fieldRef}
         style={{
@@ -131,8 +139,8 @@ function SenbatsuMain({ numRows, columnsPerRow, senbatsuMembers, setSenbatsuMemb
         }}
       >
         {/* Background Image - now INSIDE the scaled container */}
-        <div className="absolute inset-0 flex justify-center items-center -z-50"
-          style={{ transform: "scale(1.2)" }}
+        <div className="absolute inset-0 flex justify-center items-center -z-50 "
+          style={{ transform: `translate(${bgOffset.x}px, ${bgOffset.y}px) scale(${bgScale})` }}
         >
           <Image
             fill
@@ -150,7 +158,12 @@ function SenbatsuMain({ numRows, columnsPerRow, senbatsuMembers, setSenbatsuMemb
 
       {/* Field Adjustment Configuration */}
       <div className="relative z-10 w-full max-w-4xl px-4">
-        <FieldAdjustmentConfig />
+        <FieldAdjustmentConfig
+          numRows={numRows}
+          setNumRows={setNumRows}
+          columnsPerRow={columnsPerRow}
+          setColumnsPerRow={setColumnsPerRow}
+        />
       </div>
     </main>
   );

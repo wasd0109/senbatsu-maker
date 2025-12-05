@@ -12,6 +12,8 @@ type SenbatsuStyle = {
   senbatsuFieldOffset?: { x: number; y: number };
   senbatsuFieldScale?: number;
   senbatsuFieldStaggerEnabled?: boolean;
+  backgroundImageOffset?: { x: number; y: number };
+  backgroundImageScale?: number;
 };
 type SenbatsuStyleValue = 'none' | 'nogizaka' | 'sakurazaka' | 'hinatazaka';
 
@@ -32,8 +34,8 @@ const senbatsuStyle: { [key: string]: SenbatsuStyle } = {
     senbatsuItemSize: { width: 100, height: 150 },
     senbatsuItemOverlap: true,
     senbatsuItemOverlapGap: { x: 25, y: 10 },
-    senbatsuFieldOffset: { x: 0, y: 0 },
-    senbatsuFieldScale: 1,
+    senbatsuFieldOffset: { x: -12, y: 0 },
+    senbatsuFieldScale: 0.79,
     senbatsuFieldStaggerEnabled: false,
   },
   "sakurazaka": {
