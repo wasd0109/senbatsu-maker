@@ -97,7 +97,7 @@ function FieldAdjustmentConfig({ numRows, setNumRows, columnsPerRow, setColumnsP
                         {/* Columns per Row */}
                         <div>
                             <label className="block text-xs font-medium text-gray-600 mb-2">Columns per Row</label>
-                            <div className="flex gap-4 space-y-1.5">
+                            <div className="grid grid-cols-2 md:flex gap-4 space-y-1.5">
                                 {Array.from({ length: numRows }, (_, i) => i).map((rowNum) => (
                                     <div key={rowNum} className="flex flex-col gap-1">
                                         <div className="flex items-center gap-2">
@@ -338,7 +338,7 @@ function FieldAdjustmentConfig({ numRows, setNumRows, columnsPerRow, setColumnsP
                         updateStyleProperty('backgroundImageOffset', { x: 0, y: 0 });
                         updateStyleProperty('backgroundImageScale', 1.2);
                     }}
-                    className="w-full px-3 py-1.5 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded transition-colors"
+                    className="w-full mt-6 px-3 py-1.5 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded transition-colors"
                 >
                     Reset
                 </button>
