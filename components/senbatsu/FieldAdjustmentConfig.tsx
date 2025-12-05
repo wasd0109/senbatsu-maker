@@ -38,11 +38,10 @@ function FieldAdjustmentConfig({ numRows, setNumRows, columnsPerRow, setColumnsP
     }, [numRows, columnsPerRow]);
 
     return (
-        <div className="p-3 bg-white rounded-lg border border-gray-200 max-h-96 overflow-y-auto">
-            <h3 className="text-sm font-semibold mb-3 text-gray-700">Adjustment</h3>
+        <div className="bg-white rounded-lg border border-gray-200">
+            <div className="p-3">
+                <h3 className="text-sm font-semibold mb-3 text-gray-700">Adjustment</h3>
 
-            {/* Mobile: Horizontal Layout */}
-            <div className="">
                 {/* Style Selection */}
                 <div className="flex items-center gap-3 mb-3 pb-3 border-b border-gray-200">
                     <label className="text-xs font-semibold text-gray-700 whitespace-nowrap">Style:</label>
@@ -62,16 +61,19 @@ function FieldAdjustmentConfig({ numRows, setNumRows, columnsPerRow, setColumnsP
                     </select>
                 </div>
 
-                {/* Detailed Settings Section */}
+                {/* Detailed Settings Section - Sticky Button */}
                 <button
                     onClick={() => setIsDetailedSettingsOpen(!isDetailedSettingsOpen)}
-                    className="w-full flex items-center justify-between text-xs font-semibold mb-2 text-gray-600 hover:text-gray-800 transition-colors"
+                    className="w-full flex items-center justify-between text-xs font-semibold mb-2 text-gray-600 hover:text-gray-800 transition-colors bg-white sticky top-0 z-10 py-2"
                 >
                     <span>Detailed Settings</span>
                     <span className="text-lg">{isDetailedSettingsOpen ? '−' : '+'}</span>
                 </button>
+            </div>
 
-                {isDetailedSettingsOpen && (
+            {/* Scrollable Content Area */}
+            {isDetailedSettingsOpen && (
+                <div className="max-h-80 overflow-y-auto px-3 pb-3">
                     <div>
                         {/* Formation Configuration Section */}
                         <button
@@ -354,8 +356,8 @@ function FieldAdjustmentConfig({ numRows, setNumRows, columnsPerRow, setColumnsP
                             Reset
                         </button>
                     </div>
-                )}
-            </div>
+                </div>
+            )}
         </div>
     );
 }
