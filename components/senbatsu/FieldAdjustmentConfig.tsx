@@ -6,8 +6,6 @@ function FieldAdjustmentConfig() {
     const offset = selectedStyle.senbatsuFieldOffset || { x: 0, y: 0 };
     const scale = selectedStyle.senbatsuFieldScale || 1;
     const overlapGap = selectedStyle.senbatsuItemOverlapGap || { x: 25, y: 10 };
-    const hasOverlap = selectedStyle.senbatsuItemOverlap === true;
-    const staggerEnabled = selectedStyle.senbatsuFieldStaggerEnabled ?? false;
 
     return (
         <div className="p-3 bg-white rounded-lg border border-gray-200">
@@ -19,7 +17,7 @@ function FieldAdjustmentConfig() {
                     {/* X Offset */}
                     <div>
                         <label className="block text-xs font-medium text-gray-600 mb-1">
-                            X: {offset.x}px
+                            Senbatsu Field X position: {offset.x}px
                         </label>
                         <input
                             type="range"
@@ -37,7 +35,7 @@ function FieldAdjustmentConfig() {
                     {/* Y Offset */}
                     <div>
                         <label className="block text-xs font-medium text-gray-600 mb-1">
-                            Y: {offset.y}px
+                            Senbatsu Field Y position: {offset.y}px
                         </label>
                         <input
                             type="range"
@@ -71,55 +69,65 @@ function FieldAdjustmentConfig() {
                         />
                     </div>
 
-                    {/* Overlap Gap Controls - Only show if overlap is enabled */}
-                    {hasOverlap && (
-                        <>
-                            <div>
-                                <label className="block text-xs font-medium text-gray-600 mb-1">
-                                    Gap X: {overlapGap.x}px
-                                </label>
-                                <input
-                                    type="range"
-                                    min="0"
-                                    max="100"
-                                    value={overlapGap.x}
-                                    onChange={(e) => {
-                                        const newX = parseInt(e.target.value);
-                                        updateStyleProperty('senbatsuItemOverlapGap', { ...overlapGap, x: newX });
-                                    }}
-                                    className="w-full h-1"
-                                />
-                            </div>
+                    {/* Item Shape Toggle */}
+                    <div>
+                        <label className="block text-xs font-medium text-gray-600 mb-1">
+                            Item Shape
+                        </label>
+                        <button
+                            onClick={() => {
+                                const newShape = selectedStyle.senbatsuItemShape === 'rectangular' ? 'circular' : 'rectangular';
+                                updateStyleProperty('senbatsuItemShape', newShape);
+                            }}
+                            className="w-full px-3 py-2 text-xs bg-blue-100 hover:bg-blue-200 text-blue-700 rounded transition-colors font-medium"
+                        >
+                            {selectedStyle.senbatsuItemShape === 'rectangular' ? '□ Rectangle' : '○ Rounded'}
+                        </button>
+                    </div>
 
-                            <div>
-                                <label className="block text-xs font-medium text-gray-600 mb-1">
-                                    Gap Y: {overlapGap.y}px
-                                </label>
-                                <input
-                                    type="range"
-                                    min="0"
-                                    max="50"
-                                    value={overlapGap.y}
-                                    onChange={(e) => {
-                                        const newY = parseInt(e.target.value);
-                                        updateStyleProperty('senbatsuItemOverlapGap', { x: overlapGap.x, y: newY });
-                                    }}
-                                    className="w-full h-1"
-                                />
-                            </div>
-                        </>
-                    )}
+                    {/* Overlap Gap Controls*/}
+                    <div>
+                        <label className="block text-xs font-medium text-gray-600 mb-1">
+                            Overlap X: {overlapGap.x}px
+                        </label>
+                        <input
+                            type="range"
+                            min="-50"
+                            max="50"
+                            value={overlapGap.x}
+                            onChange={(e) => {
+                                const newX = parseInt(e.target.value);
+                                updateStyleProperty('senbatsuItemOverlapGap', { ...overlapGap, x: newX });
+                            }}
+                            className="w-full h-1"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-xs font-medium text-gray-600 mb-1">
+                            Overlap Y: {overlapGap.y}px
+                        </label>
+                        <input
+                            type="range"
+                            min="0"
+                            max="50"
+                            value={overlapGap.y}
+                            onChange={(e) => {
+                                const newY = parseInt(e.target.value);
+                                updateStyleProperty('senbatsuItemOverlapGap', { x: overlapGap.x, y: newY });
+                            }}
+                            className="w-full h-1"
+                        />
+                    </div>
                 </div>
 
-                {/* Reset Button - Mobile */}
+                {/* Reset Button */}
                 <button
                     onClick={() => {
                         updateStyleProperty('senbatsuFieldOffset', { x: 0, y: 0 });
                         updateStyleProperty('senbatsuFieldScale', 1);
                         updateStyleProperty('senbatsuFieldStaggerEnabled', true);
-                        if (hasOverlap) {
-                            updateStyleProperty('senbatsuItemOverlapGap', { x: 25, y: 10 });
-                        }
+                        updateStyleProperty('senbatsuItemOverlapGap', { x: 25, y: 10 });
                     }}
                     className="w-full px-3 py-1.5 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded transition-colors"
                 >
