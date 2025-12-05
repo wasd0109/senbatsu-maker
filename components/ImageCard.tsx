@@ -52,6 +52,7 @@ const ImageCard = React.forwardRef<HTMLDivElement, ImageCardProps>(({
                     className={`${imageAnchor === "top" ? "object-top" : imageAnchor === "center" ? "object-center" : "object-bottom"} h-full w-full ${fit === 'cover' ? 'object-cover' : 'object-contain'}`}
                     width={80}
                     height={80}
+                    draggable={false}
                 />
             </div>
 
