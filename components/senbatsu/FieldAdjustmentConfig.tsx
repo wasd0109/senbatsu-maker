@@ -19,6 +19,7 @@ const generateColumnInputValue = (numRows: number, columnsPerRow: { [key: number
 
 function FieldAdjustmentConfig({ numRows, setNumRows, columnsPerRow, setColumnsPerRow }: FieldAdjustmentConfigProps) {
     const { selectedStyle, setSelectedStyle, senbatsuStyle, updateStyleProperty } = useSenbatsuStyle();
+    const [selectedStyleValue, setSelectedStyleValue] = useState<string>(selectedStyle.value);
     const [isDetailedSettingsOpen, setIsDetailedSettingsOpen] = useState(false);
     const [isFieldConfigOpen, setIsFieldConfigOpen] = useState(false);
     const [isBgConfigOpen, setIsBgConfigOpen] = useState(false);
@@ -48,7 +49,10 @@ function FieldAdjustmentConfig({ numRows, setNumRows, columnsPerRow, setColumnsP
                     <select
                         className="flex-1 px-2 py-1 border border-gray-300 rounded text-xs"
                         value={selectedStyle.value}
-                        onChange={(e) => setSelectedStyle(senbatsuStyle[e.target.value])}
+                        onChange={(e) => {
+                            setSelectedStyle(senbatsuStyle[e.target.value])
+                            setSelectedStyleValue(e.target.value);
+                        }}
                     >
                         {senbatsuStyle && Object.keys(senbatsuStyle).map((styleKey) => (
                             <option key={styleKey} value={styleKey}>
@@ -343,12 +347,7 @@ function FieldAdjustmentConfig({ numRows, setNumRows, columnsPerRow, setColumnsP
                         {/* Reset Button */}
                         <button
                             onClick={() => {
-                                updateStyleProperty('senbatsuFieldOffset', { x: 0, y: 0 });
-                                updateStyleProperty('senbatsuFieldScale', 1);
-                                updateStyleProperty('senbatsuFieldStaggerEnabled', true);
-                                updateStyleProperty('senbatsuItemOverlapGap', { x: 25, y: 10 });
-                                updateStyleProperty('backgroundImageOffset', { x: 0, y: 0 });
-                                updateStyleProperty('backgroundImageScale', 1.2);
+                                setSelectedStyle(senbatsuStyle[selectedStyleValue]);
                             }}
                             className="w-full mt-6 px-3 py-1.5 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded transition-colors"
                         >
