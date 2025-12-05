@@ -67,7 +67,7 @@ function SenbatsuItem({ rowIndex, colIndex, member, zIndex }: SenbatsuItemProps)
     }, [member])
 
     // Define alternating styles for empty slots when overlapped
-    const emptySlotStyle = shouldOverlap && !member ? {
+    const emptySlotStyle = !member ? {
         border: isEven ? '2px dashed rgba(0, 0, 0, 0.4)' : '2px dashed rgba(30, 64, 175, 0.6)',
         backgroundColor: isEven ? 'rgba(0, 0, 0, 0.2)' : 'rgba(30, 64, 175, 0.3)',
         boxShadow: isEven
