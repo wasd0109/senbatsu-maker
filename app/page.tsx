@@ -127,15 +127,13 @@ export default function Home() {
         <MemberSidebar
           memberData={memberData}
           groupMetadata={groupMetadata}
-          numRows={numRows}
-          setNumRows={setNumRows}
-          columnsPerRow={columnsPerRow}
-          setColumnsPerRow={setColumnsPerRow}
           onAddMember={addMemberToSenbatsu}
         />
         <SenbatsuMain
           numRows={numRows}
+          setNumRows={setNumRows}
           columnsPerRow={columnsPerRow}
+          setColumnsPerRow={setColumnsPerRow}
           senbatsuMembers={senbatsuMembers}
           setSenbatsuMembers={setSenbatsuMembers}
         />
