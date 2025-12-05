@@ -12,20 +12,22 @@ type SenbatsuStyle = {
   senbatsuFieldOffset?: { x: number; y: number };
   senbatsuFieldScale?: number;
   senbatsuFieldStaggerEnabled?: boolean;
+  backgroundImagePath?: string;
   backgroundImageOffset?: { x: number; y: number };
   backgroundImageScale?: number;
 };
 type SenbatsuStyleValue = 'none' | 'nogizaka' | 'sakurazaka' | 'hinatazaka';
 
-const defaultRectangularSenbatsuItemSize = { width: 70, height: 94 };
+const defaultRectangularSenbatsuItemSize = { width: 100, height: 150 };
 const defaultCircularSenbatsuItemSize = { width: 94, height: 94 };
 
 const senbatsuStyle: { [key: string]: SenbatsuStyle } = {
   "none": {
     label: 'None',
     value: 'none',
-    senbatsuItemShape: 'circular',
-    senbatsuItemSize: defaultCircularSenbatsuItemSize,
+    senbatsuItemShape: 'rectangular',
+    senbatsuItemSize: defaultRectangularSenbatsuItemSize,
+    senbatsuFieldOffset: { x: 0, y: -50 }
   },
   "nogizaka": {
     label: '乃木坂46',
@@ -34,9 +36,11 @@ const senbatsuStyle: { [key: string]: SenbatsuStyle } = {
     senbatsuItemSize: { width: 100, height: 150 },
     senbatsuItemOverlap: true,
     senbatsuItemOverlapGap: { x: 25, y: 10 },
-    senbatsuFieldOffset: { x: -12, y: 0 },
-    senbatsuFieldScale: 0.79,
+    senbatsuFieldOffset: { x: -25, y: -85 },
+    senbatsuFieldScale: 0.76,
     senbatsuFieldStaggerEnabled: false,
+    backgroundImageOffset: { x: 0, y: -85 },
+    backgroundImagePath: "/images/backgrounds/nogizaka.png"
   },
   "sakurazaka": {
     label: '櫻坂46',

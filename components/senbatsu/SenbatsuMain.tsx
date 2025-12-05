@@ -139,16 +139,17 @@ function SenbatsuMain({ numRows, setNumRows, columnsPerRow, setColumnsPerRow, se
         }}
       >
         {/* Background Image - now INSIDE the scaled container */}
-        <div className="absolute inset-0 flex justify-center items-center -z-50 "
+        {selectedStyle.backgroundImagePath && (<div className="absolute inset-0 flex justify-center items-center -z-50 "
           style={{ transform: `translate(${bgOffset.x}px, ${bgOffset.y}px) scale(${bgScale})` }}
         >
           <Image
             fill
-            src={"/images/backgrounds/nogizaka.png"}
+            src={selectedStyle.backgroundImagePath}
             alt='background image'
             className='object-cover'
           />
-        </div>
+        </div>)
+        }
 
         {/* SenbatsuField */}
         <div className='h-full flex justify-center items-end'>
