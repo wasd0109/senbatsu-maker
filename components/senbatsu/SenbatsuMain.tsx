@@ -157,7 +157,7 @@ function SenbatsuMain({ numRows, setNumRows, columnsPerRow, setColumnsPerRow, se
       </div>
 
       {/* Field Adjustment Configuration */}
-      <div className="relative z-10 w-full max-w-4xl px-4">
+      <div className="absolute bottom-10 z-10 w-full max-w-4xl px-4">
         <FieldAdjustmentConfig
           numRows={numRows}
           setNumRows={setNumRows}
